@@ -26,7 +26,8 @@ module CriticalPathCss
     end
 
     def path_for_route(route)
-      css_paths[routes.index(route)] || css_paths.first
+      return css_paths.first if (index = routes.index(route)).blank? || routes.blank? || (routes.size == 0 && routes.first == '*')
+      css_paths[index] || css_paths.first
     end
   end
 end
