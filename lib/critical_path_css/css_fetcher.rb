@@ -22,6 +22,10 @@ module CriticalPathCss
         'timeout' => 30_000,
         # CSS selectors to always include, e.g.:
         'forceInclude' => [
+          'nav .navbar-nav li .btn-outline-danger:hover',
+          'nav .btn-outline-danger:hover',
+          '.navbar-left .nav-item:hover',
+          '.navbar-left .nav-item:hover .navbar-dropdown'
           #  '.keepMeEvenIfNotSeenInDom',
           #  '^\.regexWorksToo'
         ],
