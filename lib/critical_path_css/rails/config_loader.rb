@@ -21,11 +21,10 @@ module CriticalPathCss
       def format_css_paths
         config['css_paths'] = [config['css_path']] if config['css_path']
 
-        if config['css_paths']
-          config['css_paths'].map! { |path| format_path(path) }
-        else
+        unless config['css_paths']
           config['css_paths'] = [format_path(ActionController::Base.helpers.stylesheet_path(config['manifest_name'], host: ''))]
         end
+        config['css_paths'].map! { |path| format_path(path) }
       end
 
       def format_path(path)
@@ -33,7 +32,9 @@ module CriticalPathCss
       end
 
       def validate_css_paths
-        if config['css_path'] && config['css_paths']
+        if config['manifest_name'] && (config['css_path'] || config['css_paths'])
+          raise LoadError, 'Cannot specify both manifest_name and css_path(s)'
+        elsif config['css_path'] && config['css_paths']
           raise LoadError, 'Cannot specify both css_path and css_paths'
         elsif config['css_paths'] && config['css_paths'].length != config['routes'].length
           raise LoadError, 'Must specify css_paths for each route'
