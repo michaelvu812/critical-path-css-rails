@@ -43,7 +43,7 @@ module CriticalPathCss
       out, err, st = Dir.chdir(GEM_ROOT) do
         Open3.capture3('node', 'lib/fetch-css.js', JSON.dump(options))
       end
-      if !st.exitstatus.zero? || out.empty? && !err.empty?
+      if (st.present? && !st.exitstatus.zero?) || out.empty? && !err.empty?
         STDOUT.puts out
         STDERR.puts err
         STDERR.puts "Failed to get CSS for route #{route}\n" \
