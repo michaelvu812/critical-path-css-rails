@@ -26,7 +26,7 @@ module CriticalPathCss
           #  '^\.regexWorksToo'
         ],
         # set to true to throw on CSS errors (will run faster if no errors)
-        'strict' => true,
+        'strict' => false,
         # characters; strip out inline base64 encoded resources larger than this
         'maxEmbeddedBase64Length' => 10_000,
         # specify which user agent string when loading the page
