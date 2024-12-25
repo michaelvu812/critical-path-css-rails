@@ -40,9 +40,13 @@ module CriticalPathCss
           'Accept-Encoding' => 'identity'
         }
       }.merge(@config.penthouse_options)
-      out, err, st = Dir.chdir(GEM_ROOT) do
-        Open3.capture3('node', 'lib/fetch-css.js', JSON.dump(options))
-      end
+      out, err, st = if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.5.0')
+                       Open3.capture3('node', 'lib/fetch-css.js', JSON.dump(options), chdir: GEM_ROOT)
+                     else
+                       Dir.chdir(GEM_ROOT) do
+                         Open3.capture3('node', 'lib/fetch-css.js', JSON.dump(options))
+                       end
+                     end
       if (st.present? && !st.exitstatus.zero?) || out.empty? && !err.empty?
         STDOUT.puts out
         STDERR.puts err
